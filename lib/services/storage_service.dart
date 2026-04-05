@@ -4,7 +4,6 @@ class StorageService {
   static const String _isLoggedInKey = 'isLoggedIn';
   static const String _darkModeKey = 'darkMode';
   static const String _userNameKey = 'userName';
-  static const String _displayNameKey = 'displayName';
   static const String _emailKey = 'email';
   static const String _passwordKey = 'password';
   static const String _habitsDataKey = 'habitsData';
@@ -14,6 +13,16 @@ class StorageService {
   static const String _notificationsEnabledKey = 'notificationsEnabled';
   static const String _selectedHabitsKey = 'selectedHabits';
   static const String _selectedTimesKey = 'selectedTimes';
+
+  // New method for Criterion 18 verification in VS Code
+  Future<void> debugDump() async {
+    final prefs = await SharedPreferences.getInstance();
+    print("--- LOCAL STORAGE DUMP ---");
+    for (String key in prefs.getKeys()) {
+      print('$key: ${prefs.get(key)}');
+    }
+    print("--------------------------");
+  }
 
   Future<void> setLoginStatus(bool status) async {
     final prefs = await SharedPreferences.getInstance();
@@ -43,12 +52,12 @@ class StorageService {
 
   Future<void> setUserName(String name) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_displayNameKey, name);
+    await prefs.setString(_userNameKey, name);
   }
 
   Future<String> getUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_displayNameKey) ?? 'User';
+    return prefs.getString(_userNameKey) ?? 'User';
   }
 
   Future<void> setAge(double age) async {

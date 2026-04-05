@@ -60,6 +60,9 @@ class _PersonalInfoScreenState extends State<PersonalInfoScreen> {
     final creds = await _storage.getUserCredentials();
     await _storage.saveUserCredentials(_usernameController.text, creds['email'] ?? '', creds['password'] ?? '');
 
+    // Trigger debug dump for Criterion 18 verification
+    await _storage.debugDump();
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

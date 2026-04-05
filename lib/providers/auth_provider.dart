@@ -21,17 +21,23 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> login(String email, String password) async {
-    _isAuthenticated = true;
-    _userName = await _storage.getUserName();
-    await _storage.setLoginStatus(true);
-    notifyListeners();
+  Future<bool> login(String email, String password) async {
+    final creds = await _storage.getUserCredentials();
+    
+    if (creds['email'] == email && creds['password'] == password) {
+      _isAuthenticated = true;
+      _userName = creds['username'] ?? 'User';
+      await _storage.setLoginStatus(true);
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 
-  Future<void> register(String name, String email, String password) async {
+  Future<void> register(String username, String email, String password) async {
     _isAuthenticated = true;
-    _userName = name;
-    await _storage.setUserName(name);
+    _userName = username;
+    await _storage.saveUserCredentials(username, email, password);
     await _storage.setLoginStatus(true);
     notifyListeners();
   }

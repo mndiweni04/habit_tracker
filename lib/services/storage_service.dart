@@ -4,6 +4,8 @@ class StorageService {
   static const String _isLoggedInKey = 'isLoggedIn';
   static const String _darkModeKey = 'darkMode';
   static const String _userNameKey = 'userName';
+  static const String _emailKey = 'email';
+  static const String _passwordKey = 'password';
   static const String _habitsDataKey = 'habitsData';
 
   Future<void> setLoginStatus(bool status) async {
@@ -14,6 +16,22 @@ class StorageService {
   Future<bool> getLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(_isLoggedInKey) ?? false;
+  }
+
+  Future<void> saveUserCredentials(String username, String email, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_userNameKey, username);
+    await prefs.setString(_emailKey, email);
+    await prefs.setString(_passwordKey, password);
+  }
+
+  Future<Map<String, String?>> getUserCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'username': prefs.getString(_userNameKey),
+      'email': prefs.getString(_emailKey),
+      'password': prefs.getString(_passwordKey),
+    };
   }
 
   Future<void> setUserName(String name) async {

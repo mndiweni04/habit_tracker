@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import '../providers/auth_provider.dart';
 import 'add_habit_screen.dart';
+import 'detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -17,9 +18,20 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Loading..."), 
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              child: Icon(Icons.loop, color: Colors.blue.shade700, size: 24),
+            ),
+            const SizedBox(width: 12),
+            const Text("HabitLoop App", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+          ],
+        ),
         backgroundColor: Colors.blue.shade700,
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       drawer: _buildDrawer(context, authProvider),
       body: Padding(
@@ -64,7 +76,12 @@ class HomeScreen extends StatelessWidget {
                               leading: CircleAvatar(backgroundColor: habit.color),
                               title: Text(habit.title),
                               subtitle: Text(habit.goal),
-                              onTap: null, // Legacy DetailScreen dependency removed per specifications
+                              onTap: () {
+                                Navigator.push(
+                                  context, 
+                                  MaterialPageRoute(builder: (_) => DetailScreen(habit: habit))
+                                );
+                              },
                             ),
                           ),
                         );
@@ -100,7 +117,12 @@ class HomeScreen extends StatelessWidget {
                               icon: const Icon(Icons.undo),
                               onPressed: () => habitProvider.toggleHabit(originalIndex),
                             ),
-                            onTap: null, // Legacy DetailScreen dependency removed per specifications
+                            onTap: () {
+                              Navigator.push(
+                                context, 
+                                MaterialPageRoute(builder: (_) => DetailScreen(habit: habit))
+                              );
+                            },
                           ),
                         );
                       },

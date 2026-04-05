@@ -10,81 +10,125 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _nameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  double _age = 25.0;
-  String _country = 'United States';
-  List<String> selectedHabits = [];
-  final List<String> availableHabits = ['Wake Up Early', 'Workout', 'Drink Water', 'Meditate', 'Read a Book', 'Journal'];
 
   void _handleRegister() {
-    if (_nameController.text.isEmpty || _emailController.text.isEmpty) return;
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    auth.register(_nameController.text, _emailController.text, _passwordController.text);
-    Navigator.pop(context);
+    if (_formKey.currentState!.validate()) {
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      auth.register(
+        _usernameController.text.trim(),
+        _emailController.text.trim(),
+        _passwordController.text,
+      );
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Register'), backgroundColor: Colors.blue.shade700, elevation: 0),
+      appBar: AppBar(
+        title: const Text('Sign Up'),
+        backgroundColor: Colors.blue.shade700,
+        elevation: 0,
+      ),
       body: Container(
-        decoration: BoxDecoration(gradient: LinearGradient(colors: [Colors.blue.shade700, Colors.blue.shade900], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade700, Colors.blue.shade900],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildField(_nameController, 'Name', Icons.person),
-              const SizedBox(height: 10),
-              _buildField(_usernameController, 'Username', Icons.alternate_email),
-              const SizedBox(height: 20),
-              Text('Age: ${_age.round()}', style: const TextStyle(color: Colors.white, fontSize: 18)),
-              Slider(value: _age, min: 21, max: 100, divisions: 79, activeColor: Colors.blue.shade600, onChanged: (v) => setState(() => _age = v)),
-              const SizedBox(height: 10),
-              _buildDropdown(),
-              const SizedBox(height: 20),
-              const Text('Select Your Habits', style: TextStyle(color: Colors.white, fontSize: 18)),
-              const SizedBox(height: 10),
-              Wrap(
-                spacing: 10, runSpacing: 10,
-                children: availableHabits.map((habit) {
-                  final isSelected = selectedHabits.contains(habit);
-                  return GestureDetector(
-                    onTap: () => setState(() => isSelected ? selectedHabits.remove(habit) : selectedHabits.add(habit)),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(color: isSelected ? Colors.blue.shade600 : Colors.white, borderRadius: BorderRadius.circular(20)),
-                      child: Text(habit, style: TextStyle(color: isSelected ? Colors.white : Colors.blue.shade700)),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Create Account',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 30),
+                _buildValidatedField(
+                  controller: _usernameController,
+                  hint: 'Username',
+                  icon: Icons.person,
+                  validator: (value) => value == null || value.isEmpty ? 'Username is required' : null,
+                ),
+                const SizedBox(height: 15),
+                _buildValidatedField(
+                  controller: _emailController,
+                  hint: 'Email',
+                  icon: Icons.email,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return 'Email is required';
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) return 'Enter a valid email';
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 15),
+                _buildValidatedField(
+                  controller: _passwordController,
+                  hint: 'Password',
+                  icon: Icons.lock,
+                  obscure: true,
+                  validator: (value) => value == null || value.length < 6 ? 'Password must be at least 6 characters' : null,
+                ),
+                const SizedBox(height: 40),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _handleRegister,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue.shade600,
+                      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                     ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 30),
-              Center(
-                child: ElevatedButton(onPressed: _handleRegister, style: ElevatedButton.styleFrom(backgroundColor: Colors.blue.shade600, padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15)), child: const Text('Register', style: TextStyle(color: Colors.white))),
-              ),
-            ],
+                    child: const Text('Register', style: TextStyle(color: Colors.white, fontSize: 16)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildField(TextEditingController ctrl, String hint, IconData icon) {
-    return Container(decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)), child: TextField(controller: ctrl, decoration: InputDecoration(prefixIcon: Icon(icon, color: Colors.blue.shade700), hintText: hint, border: InputBorder.none, contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15))));
-  }
-
-  Widget _buildDropdown() {
+  Widget _buildValidatedField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+    bool obscure = false,
+    required String? Function(String?) validator,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30)),
-      child: DropdownButton<String>(
-        value: _country, isExpanded: true, underline: const SizedBox(),
-        items: ['United States', 'Canada', 'United Kingdom', 'Australia', 'South Africa'].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
-        onChanged: (v) => setState(() => _country = v!),
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscure,
+        validator: validator,
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: Colors.blue.shade700),
+          hintText: hint,
+          border: InputBorder.none,
+          errorStyle: const TextStyle(height: 0, color: Colors.transparent),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        ),
       ),
     );
   }

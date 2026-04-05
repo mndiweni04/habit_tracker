@@ -17,7 +17,5 @@ class NotificationService {
       await _notifications.cancelAll();
       return;
     }
-    // Logic for scheduling at the 3 specific intervals (8 AM, 1 PM, 8 PM)
-    // requires the 'timezone' package as per industry best practices.
   }
 }

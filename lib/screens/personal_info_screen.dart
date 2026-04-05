@@ -6,7 +6,6 @@ class PersonalInfoScreen extends StatefulWidget {
   const PersonalInfoScreen({super.key});
 
   @override
-  // Linter Fix: Made the return type public to adhere to Dart best practices
   State<PersonalInfoScreen> createState() => _PersonalInfoScreenState();
 }
 

@@ -29,14 +29,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Future<void> _saveNotificationSettings() async {
-    // Persists the current configuration to local storage
   }
 
   void _sendTestNotification() {
-    // Uses standard Flutter logic instead of web-only dart:html
     if (_notificationsEnabled) {
       final notificationService = Provider.of<NotificationService>(context, listen: false);
-      // Trigger the local notification service (compatible with Android/iOS)
       notificationService.scheduleDailyReminders(true);
       
       ScaffoldMessenger.of(context).showSnackBar(

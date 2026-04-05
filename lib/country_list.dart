@@ -1,5 +1,3 @@
-// lib/country_list.dart
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -14,11 +12,9 @@ Future<List<String>> fetchCountries() async {
         .map((country) => country['name']['common'] as String)
         .toList();
     
-    // Sort alphabetically for better UX in the DropdownButton
     countryList.sort();
     return countryList;
   } else {
-    // Preserving the detailed exception for ongoing system monitoring
     throw Exception('Failed to load countries: Status ${response.statusCode}');
   }
 }

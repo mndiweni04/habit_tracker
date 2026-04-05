@@ -24,11 +24,10 @@ class Habit {
 
   factory Habit.fromJson(Map<String, dynamic> json) {
     return Habit(
-      // Use null-coalescing to provide defaults if keys are missing or null
       title: json['title'] ?? 'New Habit',
       goal: json['goal'] ?? 'Daily Goal',
       isCompleted: json['isCompleted'] ?? false,
-      colorHex: json['colorHex'] ?? 'FF2196F3', // Default to Blue
+      colorHex: json['colorHex'] ?? 'FF2196F3',
     );
   }
 

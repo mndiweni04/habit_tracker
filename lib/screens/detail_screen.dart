@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -8,10 +9,14 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final habitProvider = Provider.of<HabitProvider>(context);
+    final currentIndex = habitProvider.habits.indexWhere((h) => h.title == habit.title && h.goal == habit.goal);
+    final currentHabit = currentIndex != -1 ? habitProvider.habits[currentIndex] : habit;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue.shade700,
-        title: Text(habit.title, style: const TextStyle(color: Colors.white)),
+        title: Text(currentHabit.title, style: const TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
@@ -23,32 +28,32 @@ class DetailScreen extends StatelessWidget {
               height: 150,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: habit.color.withOpacity(0.2),
+                color: currentHabit.color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: habit.color, width: 2),
+                border: Border.all(color: currentHabit.color, width: 2),
               ),
               child: Center(
                 child: Icon(
-                  habit.isCompleted ? Icons.check_circle : Icons.pending_actions,
+                  currentHabit.isCompleted ? Icons.check_circle : Icons.pending_actions,
                   size: 80,
-                  color: habit.color,
+                  color: currentHabit.color,
                 ),
               ),
             ),
             const SizedBox(height: 30),
             Text(
-              habit.title,
+              currentHabit.title,
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: habit.color,
+                color: currentHabit.color,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                habit.goal,
+                currentHabit.goal,
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
@@ -59,10 +64,27 @@ class DetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'Maintain a steady rhythm and consistently track this activity to reach your goal of "${habit.goal}". Tracking your progress daily helps build long-lasting patterns.',
+              'Maintain a steady rhythm and consistently track this activity to reach your goal of "${currentHabit.goal}". Tracking your progress daily helps build long-lasting patterns.',
               style: const TextStyle(fontSize: 16, height: 1.5),
             ),
             const Spacer(),
+            if (currentIndex != -1)
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    habitProvider.toggleHabit(currentIndex);
+                  },
+                  icon: Icon(currentHabit.isCompleted ? Icons.undo : Icons.check, color: Colors.white),
+                  label: Text(currentHabit.isCompleted ? 'Mark as Pending' : 'Mark as Completed', style: const TextStyle(color: Colors.white, fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: currentHabit.isCompleted ? Colors.orange : Colors.green,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(

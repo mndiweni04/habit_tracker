@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import '../services/notification_service.dart';
+import '../services/storage_service.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
@@ -11,10 +12,10 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+  final StorageService _storage = StorageService();
   bool _notificationsEnabled = false;
-  
-  final List<String> _selectedHabitTitles = [];
-  final List<String> _selectedTimes = [];
+  List<String> _selectedHabitTitles = [];
+  List<String> _selectedTimes = [];
 
   @override
   void initState() {
@@ -23,12 +24,21 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   }
 
   Future<void> _loadNotificationSettings() async {
+    final enabled = await _storage.getNotificationsEnabled();
+    final habits = await _storage.getSelectedHabits();
+    final times = await _storage.getSelectedTimes();
+    
     setState(() {
-      _notificationsEnabled = false; 
+      _notificationsEnabled = enabled;
+      _selectedHabitTitles = habits;
+      _selectedTimes = times;
     });
   }
 
   Future<void> _saveNotificationSettings() async {
+    await _storage.setNotificationsEnabled(_notificationsEnabled);
+    await _storage.setSelectedHabits(_selectedHabitTitles);
+    await _storage.setSelectedTimes(_selectedTimes);
   }
 
   void _sendTestNotification() {
@@ -37,7 +47,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       notificationService.scheduleDailyReminders(true);
       
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Test notification scheduled via Local Notifications!')),
+        const SnackBar(content: Text('Test notification dispatched via Local Notifications!')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

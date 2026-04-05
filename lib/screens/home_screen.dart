@@ -6,6 +6,7 @@ import 'add_habit_screen.dart';
 import 'detail_screen.dart';
 import 'personal_info_screen.dart';
 import 'notifications_screen.dart';
+import 'reports_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -173,6 +174,7 @@ class HomeScreen extends StatelessWidget {
             title: const Text('Reports'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const ReportsScreen()));
             },
           ),
           ListTile(

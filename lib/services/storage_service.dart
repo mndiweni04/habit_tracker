@@ -9,6 +9,10 @@ class StorageService {
   static const String _habitsDataKey = 'habitsData';
   static const String _ageKey = 'age';
   static const String _countryKey = 'country';
+  
+  static const String _notificationsEnabledKey = 'notificationsEnabled';
+  static const String _selectedHabitsKey = 'selectedHabits';
+  static const String _selectedTimesKey = 'selectedTimes';
 
   Future<void> setLoginStatus(bool status) async {
     final prefs = await SharedPreferences.getInstance();
@@ -86,6 +90,36 @@ class StorageService {
     return prefs.getString(_habitsDataKey);
   }
   
+  Future<void> setNotificationsEnabled(bool enabled) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_notificationsEnabledKey, enabled);
+  }
+
+  Future<bool> getNotificationsEnabled() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(_notificationsEnabledKey) ?? false;
+  }
+
+  Future<void> setSelectedHabits(List<String> habits) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_selectedHabitsKey, habits);
+  }
+
+  Future<List<String>> getSelectedHabits() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_selectedHabitsKey) ?? [];
+  }
+
+  Future<void> setSelectedTimes(List<String> times) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(_selectedTimesKey, times);
+  }
+
+  Future<List<String>> getSelectedTimes() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(_selectedTimesKey) ?? [];
+  }
+
   Future<void> clearStorage() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();

@@ -6,8 +6,19 @@ class NotificationService {
 
   Future<void> init() async {
     if (_initialized) return;
+    
     const AndroidInitializationSettings androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings settings = InitializationSettings(android: androidSettings);
+    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+    
+    const InitializationSettings settings = InitializationSettings(
+      android: androidSettings,
+      iOS: iosSettings,
+    );
+    
     await _notifications.initialize(settings);
     _initialized = true;
   }
@@ -17,5 +28,24 @@ class NotificationService {
       await _notifications.cancelAll();
       return;
     }
+    
+    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'habit_reminders_channel',
+      'Habit Reminders',
+      channelDescription: 'Notifications to remind you of your daily habits',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    
+    const NotificationDetails details = NotificationDetails(
+      android: androidDetails,
+    );
+    
+    await _notifications.show(
+      0,
+      'Habit Reminder',
+      'Check your schedule and complete your tasks today!',
+      details,
+    );
   }
 }

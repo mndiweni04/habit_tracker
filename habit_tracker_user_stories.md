@@ -1,21 +1,20 @@
-
 # Habit Tracker User Stories
 
-## 1. Authentication (Priority: High)
-* **Registration:** As a user, I want to create an account with my name, email, and password so that my progress is saved.
-* **Login:** As a user, I want to log in using my credentials to access my personalized dashboard.
-* **Error Handling:** As a user, I want clear feedback if I enter incorrect credentials so that I can correct them.
+## 1. Authentication
+* **Registration:** As a user, I want to create an account using a username, email, and password so that my profile is uniquely identified.
+* **Login:** As a user, I want to log in with my email and password to access my stored habit data.
+* **Auth Feedback:** As a user, I want to see a clear error message if I provide invalid credentials so I can retry.
 
-## 2. Dashboard & Navigation (Priority: High)
-* **Home View:** As a user, I want to see a personalized welcome message and my daily progress summary.
-* **Habit List:** As a user, I want to see a list of my active habits with their current status.
-* **Detail Access:** As a user, I want to tap a habit to see specific instructions and performance history.
+## 2. Dashboard & Navigation
+* **Home View:** As a user, I want a dashboard with a branded header logo and a personalized welcome message.
+* **Habit Tracking:** As a user, I want to see my habits categorized by 'To Do' and 'Done' status for easy management.
+* **Task Details:** As a user, I want to navigate to a detail screen for any habit to see its specific goals and tracking history.
 
-## 3. Data Persistence & API (Priority: Medium)
-* **Local Storage:** As a user, I want the app to remember my login state so I don't have to log in every time.
-* **External API:** As a user, I want to see a daily motivational quote fetched from an API to keep me inspired.
+## 3. Data & API Integration
+* **Local Persistence:** As a user, I want my habit progress and settings to be saved locally so they persist across app restarts.
+* **External API:** As a user, I want to select my country from a real-time list fetched from an external API during registration.
 
-## 4. Settings & Notifications (Priority: Medium)
-* **Preferences:** As a user, I want to toggle Dark Mode in settings to reduce eye strain.
-* **Reminders:** As a user, I want to receive push notifications 3 times a day (Morning, Afternoon, Evening) to ensure I complete my habits.
-* **Menu Categorization:** As a user, I want to see categorized sections in the settings menu so that I can quickly find options.
+## 4. Settings & Notifications
+* **System Settings:** As a user, I want a settings menu accessible via a drawer to configure my app experience.
+* **Visual Themes:** As a user, I want to toggle between light and dark modes to suit my environment.
+* **Smart Reminders:** As a user, I want to configure daily notifications for specific times (Morning, Afternoon, Evening) to maintain my routine.

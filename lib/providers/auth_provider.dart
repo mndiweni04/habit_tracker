@@ -24,9 +24,9 @@ class AuthProvider with ChangeNotifier {
   Future<bool> login(String email, String password) async {
     final creds = await _storage.getUserCredentials();
     
-    if (creds['email'] == email && creds['password'] == password) {
+    if ((creds['email'] == email || creds['username'] == email) && creds['password'] == password) {
       _isAuthenticated = true;
-      _userName = creds['username'] ?? 'User';
+      _userName = await _storage.getUserName();
       await _storage.setLoginStatus(true);
       notifyListeners();
       return true;
@@ -37,7 +37,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> loginHardcoded() async {
     _isAuthenticated = true;
     _userName = 'Test User';
-    await _storage.saveUserCredentials('testuser', 'testuser', 'password123');
+    await _storage.saveUserCredentials('testuser', 'testuser@example.com', 'password123');
     await _storage.setUserName('Test User');
     await _storage.setAge(25);
     await _storage.setCountry('United States');
@@ -49,6 +49,7 @@ class AuthProvider with ChangeNotifier {
     _isAuthenticated = true;
     _userName = username;
     await _storage.saveUserCredentials(username, email, password);
+    await _storage.setUserName(username);
     await _storage.setLoginStatus(true);
     notifyListeners();
   }
@@ -76,7 +77,6 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     _isAuthenticated = false;
     _userName = '';
-    await _storage.clearStorage();
     await _storage.setLoginStatus(false);
     notifyListeners();
   }

@@ -190,6 +190,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Already have an account? Login',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
               ],
             ),
           ),

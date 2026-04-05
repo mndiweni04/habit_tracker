@@ -4,6 +4,7 @@ class StorageService {
   static const String _isLoggedInKey = 'isLoggedIn';
   static const String _darkModeKey = 'darkMode';
   static const String _userNameKey = 'userName';
+  static const String _displayNameKey = 'displayName';
   static const String _emailKey = 'email';
   static const String _passwordKey = 'password';
   static const String _habitsDataKey = 'habitsData';
@@ -42,12 +43,12 @@ class StorageService {
 
   Future<void> setUserName(String name) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_userNameKey, name);
+    await prefs.setString(_displayNameKey, name);
   }
 
   Future<String> getUserName() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_userNameKey) ?? 'User';
+    return prefs.getString(_displayNameKey) ?? 'User';
   }
 
   Future<void> setAge(double age) async {

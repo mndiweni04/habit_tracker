@@ -79,6 +79,7 @@ class HomeScreen extends StatelessWidget {
                               leading: CircleAvatar(backgroundColor: habit.color),
                               title: Text(habit.title),
                               subtitle: Text(habit.goal),
+                              trailing: const Icon(Icons.chevron_right, color: Colors.grey),
                               onTap: () {
                                 Navigator.push(
                                   context, 
@@ -116,9 +117,15 @@ class HomeScreen extends StatelessWidget {
                             leading: CircleAvatar(backgroundColor: habit.color.withOpacity(0.5)),
                             title: Text(habit.title, style: const TextStyle(decoration: TextDecoration.lineThrough, color: Colors.grey)),
                             subtitle: Text(habit.goal),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.undo),
-                              onPressed: () => habitProvider.toggleHabit(originalIndex),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.undo),
+                                  onPressed: () => habitProvider.toggleHabit(originalIndex),
+                                ),
+                                const Icon(Icons.chevron_right, color: Colors.grey),
+                              ],
                             ),
                             onTap: () {
                               Navigator.push(

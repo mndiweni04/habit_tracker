@@ -17,22 +17,7 @@ class NotificationService {
       await _notifications.cancelAll();
       return;
     }
-
-    const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-      'habit_reminders',
-      'Habit Reminders',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
-    const NotificationDetails platformDetails = NotificationDetails(android: androidDetails);
-
-    // Initial logic implemented for manual trigger testing. 
-    // Implementation of timezone-specific scheduling requires integration of the 'timezone' package.
-    await _notifications.show(
-      0,
-      'Habit Reminder',
-      'Time to check your habits for the day.',
-      platformDetails,
-    );
+    // Logic for scheduling at the 3 specific intervals (8 AM, 1 PM, 8 PM)
+    // requires the 'timezone' package as per industry best practices.
   }
 }

@@ -18,3 +18,4 @@
 ## 4. Settings & Notifications (Priority: Medium)
 * **Preferences:** As a user, I want to toggle Dark Mode in settings to reduce eye strain.
 * **Reminders:** As a user, I want to receive push notifications 3 times a day (Morning, Afternoon, Evening) to ensure I complete my habits.
+* **Menu Categorization:** As a user, I want to see categorized sections in the settings menu so that I can quickly find options.

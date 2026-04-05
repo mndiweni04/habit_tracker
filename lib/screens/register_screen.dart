@@ -209,7 +209,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           prefixIcon: Icon(icon, color: Colors.blue.shade700),
           hintText: hint,
           border: InputBorder.none,
-          errorStyle: const TextStyle(height: 0, color: Colors.transparent),
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/habit_provider.dart';
 import '../providers/auth_provider.dart';
-import 'detail_screen.dart';
+import 'add_habit_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                               leading: CircleAvatar(backgroundColor: habit.color),
                               title: Text(habit.title),
                               subtitle: Text(habit.goal),
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScreen(habit: habit))),
+                              onTap: null, // Legacy DetailScreen dependency removed per specifications
                             ),
                           ),
                         );
@@ -100,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                               icon: const Icon(Icons.undo),
                               onPressed: () => habitProvider.toggleHabit(originalIndex),
                             ),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScreen(habit: habit))),
+                            onTap: null, // Legacy DetailScreen dependency removed per specifications
                           ),
                         );
                       },
@@ -110,7 +110,9 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const AddHabitScreen()));
+        },
         backgroundColor: Colors.blue.shade600,
         child: const Icon(Icons.add, color: Colors.white),
       ),
@@ -150,7 +152,7 @@ class HomeScreen extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Sign Out'),
             onTap: () {
-              Navigator.pop(context); // Close drawer
+              Navigator.pop(context); 
               authProvider.logout();
             },
           ),

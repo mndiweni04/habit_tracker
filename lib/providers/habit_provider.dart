@@ -6,25 +6,34 @@ class Habit {
   final String title;
   final String goal;
   bool isCompleted;
-  final Color color;
+  final String colorHex;
 
-  Habit({required this.title, required this.goal, this.isCompleted = false, this.color = Colors.blue});
+  Habit({
+    required this.title,
+    required this.goal,
+    this.isCompleted = false,
+    required this.colorHex,
+  });
 
   Map<String, dynamic> toJson() => {
     'title': title,
     'goal': goal,
     'isCompleted': isCompleted,
-    'colorValue': color.value,
+    'colorHex': colorHex,
   };
 
-  factory Habit.fromJson(Map<String, dynamic> json) => Habit(
-    title: json['title'],
-    goal: json['goal'],
-    isCompleted: json['isCompleted'],
-    color: Color(json['colorValue']),
-  );
-}
+  factory Habit.fromJson(Map<String, dynamic> json) {
+    return Habit(
+      // Use null-coalescing to provide defaults if keys are missing or null
+      title: json['title'] ?? 'New Habit',
+      goal: json['goal'] ?? 'Daily Goal',
+      isCompleted: json['isCompleted'] ?? false,
+      colorHex: json['colorHex'] ?? 'FF2196F3', // Default to Blue
+    );
+  }
 
+  Color get color => Color(int.parse(colorHex, radix: 16));
+}
 class HabitProvider with ChangeNotifier {
   final StorageService _storage = StorageService();
   bool _isDarkMode = false;
@@ -36,6 +45,18 @@ class HabitProvider with ChangeNotifier {
 
   HabitProvider() {
     _loadData();
+  }
+
+  void addHabit(Habit habit) {
+    _habits.add(habit);
+    _saveHabits();
+    notifyListeners();
+  }
+
+  void deleteHabit(int index) {
+    _habits.removeAt(index);
+    _saveHabits();
+    notifyListeners();
   }
 
   void toggleHabit(int index) {
@@ -58,8 +79,8 @@ class HabitProvider with ChangeNotifier {
       _habits = decoded.map((h) => Habit.fromJson(h)).toList();
     } else {
       _habits = [
-        Habit(title: "Drink Water", goal: "2L Goal", color: Colors.blue),
-        Habit(title: "Morning Meds", goal: "1 Dose", color: Colors.green),
+        Habit(title: "Drink Water", goal: "2L Goal", colorHex: "FF2196F3"),
+        Habit(title: "Morning Meds", goal: "1 Dose", colorHex: "FF4CAF50"),
       ];
     }
     notifyListeners();

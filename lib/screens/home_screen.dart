@@ -4,6 +4,7 @@ import '../providers/habit_provider.dart';
 import '../providers/auth_provider.dart';
 import 'add_habit_screen.dart';
 import 'detail_screen.dart';
+import 'personal_info_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -148,27 +149,37 @@ class HomeScreen extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(color: Colors.blue.shade700),
-            child: const Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
+            child: const Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Configure'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const AddHabitScreen()));
+            },
           ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text('Personal Info'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => const PersonalInfoScreen()));
+            },
           ),
           ListTile(
             leading: const Icon(Icons.bar_chart),
             title: const Text('Reports'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.notifications),
             title: const Text('Notifications'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+            },
           ),
           ListTile(
             leading: const Icon(Icons.logout),

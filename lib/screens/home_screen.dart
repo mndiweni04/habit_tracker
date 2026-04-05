@@ -5,6 +5,7 @@ import '../providers/auth_provider.dart';
 import 'add_habit_screen.dart';
 import 'detail_screen.dart';
 import 'personal_info_screen.dart';
+import 'notifications_screen.dart'; // New Import [cite: 865]
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -179,6 +180,11 @@ class HomeScreen extends StatelessWidget {
             title: const Text('Notifications'),
             onTap: () {
               Navigator.pop(context);
+              // Route integration for Notifications lab 
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (_) => const NotificationsScreen())
+              );
             },
           ),
           ListTile(

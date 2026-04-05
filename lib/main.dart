@@ -19,19 +19,19 @@ void main() async {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         Provider<NotificationService>.value(value: notificationService),
       ],
-      child: const HabitTrackerApp(),
+      child: const HabittApp(),
     ),
   );
 }
 
-class HabitTrackerApp extends StatelessWidget {
-  const HabitTrackerApp({super.key});
+class HabittApp extends StatelessWidget {
+  const HabittApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     final habitProvider = Provider.of<HabitProvider>(context);
     return MaterialApp(
-      title: 'HabitLoop',
+      title: 'Habitt',
       debugShowCheckedModeBanner: false,
       theme: habitProvider.isDarkMode ? ThemeData.dark() : ThemeData.light(),
       home: const AuthWrapper(),

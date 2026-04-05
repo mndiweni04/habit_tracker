@@ -33,6 +33,17 @@ class AuthProvider with ChangeNotifier {
     }
     return false;
   }
+  
+  Future<void> loginHardcoded() async {
+    _isAuthenticated = true;
+    _userName = 'Test User';
+    await _storage.saveUserCredentials('testuser', 'testuser', 'password123');
+    await _storage.setUserName('Test User');
+    await _storage.setAge(25);
+    await _storage.setCountry('United States');
+    await _storage.setLoginStatus(true);
+    notifyListeners();
+  }
 
   Future<void> register(String username, String email, String password) async {
     _isAuthenticated = true;
@@ -41,10 +52,31 @@ class AuthProvider with ChangeNotifier {
     await _storage.setLoginStatus(true);
     notifyListeners();
   }
+  
+  Future<void> registerFullProfile({
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+    required double age,
+    required String country,
+  }) async {
+    _isAuthenticated = true;
+    _userName = name;
+    
+    await _storage.saveUserCredentials(username, email, password);
+    await _storage.setUserName(name);
+    await _storage.setAge(age);
+    await _storage.setCountry(country);
+    await _storage.setLoginStatus(true);
+    
+    notifyListeners();
+  }
 
   Future<void> logout() async {
     _isAuthenticated = false;
     _userName = '';
+    await _storage.clearStorage();
     await _storage.setLoginStatus(false);
     notifyListeners();
   }

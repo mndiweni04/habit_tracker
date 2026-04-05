@@ -7,6 +7,8 @@ class StorageService {
   static const String _emailKey = 'email';
   static const String _passwordKey = 'password';
   static const String _habitsDataKey = 'habitsData';
+  static const String _ageKey = 'age';
+  static const String _countryKey = 'country';
 
   Future<void> setLoginStatus(bool status) async {
     final prefs = await SharedPreferences.getInstance();
@@ -44,6 +46,26 @@ class StorageService {
     return prefs.getString(_userNameKey) ?? 'User';
   }
 
+  Future<void> setAge(double age) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble(_ageKey, age);
+  }
+
+  Future<double> getAge() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble(_ageKey) ?? 25.0;
+  }
+
+  Future<void> setCountry(String country) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_countryKey, country);
+  }
+
+  Future<String> getCountry() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_countryKey) ?? 'Unknown';
+  }
+
   Future<void> setDarkMode(bool isDark) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_darkModeKey, isDark);
@@ -62,5 +84,10 @@ class StorageService {
   Future<String?> getHabits() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_habitsDataKey);
+  }
+  
+  Future<void> clearStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 }
